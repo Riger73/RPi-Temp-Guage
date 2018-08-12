@@ -1,5 +1,4 @@
 import sqlite3
-import sys
 
 conn = sqlite3.connect('a1data.db')
 with conn:
