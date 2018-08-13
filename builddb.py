@@ -8,8 +8,10 @@ import sqlite3 as db
 conn = db.connect('a1data.db')
 with conn:
     cursor = conn.cursor()
-    cursor.execute("DROP TABLE IF EXISTS ASSIGNMENT1_data")
-    cursor.execute(
-        "CREATE TABLE ASSIGNMENT1_data (\
-            timestamp DATETIME, temp NUMERIC, humidity NUMERIC)")
-# Todo - add exception handling for permissions or file write errors.
+    try:
+        cursor.execute("DROP TABLE IF EXISTS ASSIGNMENT1_data")
+        cursor.execute(
+            "CREATE TABLE ASSIGNMENT1_data (\
+                timestamp DATETIME, temp NUMERIC, humidity NUMERIC)")
+    except db.Error as e:
+        conn.log.error("Error creating Database: Cannot write to disk!" % e)
