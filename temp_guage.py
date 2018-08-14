@@ -13,8 +13,12 @@ sense.clear()
 
 def polltemp():    
     temp = sense.get_temperature()
+    humidity = sense.get_humidity()
     sense.show_message(
         'Temp: {0:0.1f} *c'.format(temp), scroll_speed = 0.05)
+    sense.clear()
+    sense.show_message(
+        'Humidity: {0:0.1f} *c'.format(humidity), scroll_speed = 0.05)
     sense.clear()
     date_time = datetime.now().strftime("%H:%M")
 
