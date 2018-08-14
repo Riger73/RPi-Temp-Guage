@@ -1,0 +1,8 @@
+{
+    "python.pythonPath": "C:\\Users\\timot\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
+    "python.formatting.autopep8Args": [],
+    "python.formatting.autopep8Path": "autopep8",
+    "python.linting.pylintArgs": [],
+    "python.sortImports.args": [],
+    "python.linting.pylintPath": "pylint"
+}
