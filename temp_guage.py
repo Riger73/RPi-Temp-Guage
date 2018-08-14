@@ -1,6 +1,7 @@
 from sense_hat import SenseHat
 from datetime import datetime
 from threading import Timer
+import sqlite3 as db
 # Author Tim Novice sn: s3572290 RMIT
 #
 # Gathers temerature and offsets from device heat.
@@ -11,7 +12,18 @@ from threading import Timer
 sense = SenseHat()
 sense.clear()
 
-def polltemp():    
+tempds = '/database/a1data.db'
+
+# Write data to database
+def logData(timestamp, temp, humidity):
+    conn = db.connect(tempds)
+    curs=conn.cursor()
+    curs.execute("INSERT INTO ASSIGNMENT1_data(timestamp, (?))", (temp,humidity,))
+    conn.commit()
+    conn.close()
+
+# Temperature and humitity poller
+def getTempData():    
     temp = sense.get_temperature()
     humidity = sense.get_humidity()
     sense.show_message(
@@ -20,7 +32,16 @@ def polltemp():
     sense.show_message(
         'Humidity: {0:0.1f} *c'.format(humidity), scroll_speed = 0.05)
     sense.clear()
-    date_time = datetime.now().strftime("%H:%M")
+    if temp & humidity is not None:
+        timeStamp = datetime.now().strftime("%H:%M")
+        temp = round(temp, 1)
+        humidity = round(humidity, 1)
+        logData(timestamp, temp, humidity)
+
+# Handle for thread to polling every 5 milliseconds, and calls processes.
+# Effectively functions as a main().
+def polltemp():
+    getTempData()
 
 # Timer thread for temperature poll that polls evey 5 milliseconds
 t = Timer(0.5, polltemp)
