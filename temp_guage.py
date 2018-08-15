@@ -10,11 +10,12 @@ import sqlite3 as db
 # Returns calibrated temerature and date time
 # Cycles through periodically until receiving exit feed
 # To be used as a cron task.
+# Place in same directory as database.
 #
 sense = SenseHat()
 sense.clear()
 
-tempds = '/database/a1data.db'
+tempds = 'a1data.db'
 
 # Write data to database
 def logData(timestamp, temp, humidity):
@@ -35,7 +36,7 @@ def getTempData():
         'Humidity: {0:0.1f} *c'.format(humidity), scroll_speed = 0.05)
     sense.clear()
     if temp & humidity is not None:
-        timeStamp = datetime.now().strftime("%H:%M")
+        timestamp = datetime.now().strftime("%H:%M")
         temp = round(temp, 1)
         humidity = round(humidity, 1)
         logData(timestamp, temp, humidity)
