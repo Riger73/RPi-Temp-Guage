@@ -19,9 +19,10 @@ tempds = 'a1data.db'
 
 # Write data to database
 def logData(timestamp, temp, humidity):
+    params(timestamp, temp, humidity)
     conn = db.connect(tempds)
     curs=conn.cursor()
-    curs.execute("INSERT INTO ASSIGNMENT1_data values(timestamp, (?))", (temp,humidity,))
+    curs.execute("INSERT INTO ASSIGNMENT1_data values(?, ?, ?)", params)
     conn.commit()
     conn.close()
 
