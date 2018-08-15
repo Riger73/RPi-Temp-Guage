@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from sense_hat import SenseHat
 from datetime import datetime
 from threading import Timer
@@ -38,7 +40,7 @@ def getTempData():
         humidity = round(humidity, 1)
         logData(timestamp, temp, humidity)
 
-# Handle for thread to polling every 5 milliseconds, and calls processes.
+# Handle for thread to poll every 5 milliseconds, and calls processes.
 # Effectively functions as a main().
 def polltemp():
     getTempData()
