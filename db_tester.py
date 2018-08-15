@@ -12,6 +12,6 @@ def displayData():
     conn = db.connect(tempds)
     curs = conn.cursor()
     print("\nDatabase contents:\n")
-    for row in curs.execute("SELECT * FROM ASSIGNMENT1_data"):
+    for row in curs.execute("SELECT * FROM ASSIGNMENT1_data;"):
         print(row)
     conn.close()

@@ -3,6 +3,7 @@ from sense_hat import SenseHat
 from datetime import datetime
 from threading import Timer
 import sqlite3 as db
+from threading import Thread
 
 # Author Tim Novice sn: s3572290 RMIT
 #
@@ -42,11 +43,23 @@ def getTempData():
         humidity = round(humidity, 1)
         logData(timestamp, temp, humidity)
 
-# Handle for thread to poll every 5 milliseconds, and calls processes.
-# Effectively functions as a main().
-def polltemp():
-    getTempData()
+# Thread to recursively poll every 5 milliseconds, and calls processes.
+def poll():
+    try:
+        getTempData()
+        t = Timer(0.5, poll)
+        t.start()
+    except KeyboardInterrupt:
+        sense.clear()
+        print("Thread closed").t.close()
 
-# Timer thread for temperature poll that polls evey 5 milliseconds
-t = Timer(0.5, polltemp)
-t.start()
+def main():
+    try: 
+        # Calls a thread timer to initiate the poll
+        t = Timer(0.5, poll)
+        t.start()
+    except KeyboardInterrupt:
+        sense.clear()
+        print("Thread closed").t.close()
+
+main()
