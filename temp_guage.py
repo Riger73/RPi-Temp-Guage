@@ -1,24 +1,29 @@
+#!/usr/bin/env python3
 from sense_hat import SenseHat
 from datetime import datetime
 from threading import Timer
 import sqlite3 as db
+from threading import Thread
+
 # Author Tim Novice sn: s3572290 RMIT
 #
 # Gathers temerature and offsets from device heat.
 # Returns calibrated temerature and date time
 # Cycles through periodically until receiving exit feed
 # To be used as a cron task.
+# Place in same directory as database.
 #
 sense = SenseHat()
 sense.clear()
 
-tempds = '/database/a1data.db'
+tempds = 'a1data.db'
 
 # Write data to database
 def logData(timestamp, temp, humidity):
+    params(timestamp, temp, humidity)
     conn = db.connect(tempds)
     curs=conn.cursor()
-    curs.execute("INSERT INTO ASSIGNMENT1_data(timestamp, (?))", (temp,humidity,))
+    curs.execute("INSERT INTO ASSIGNMENT1_data values(?, ?, ?)", params)
     conn.commit()
     conn.close()
 
@@ -33,16 +38,28 @@ def getTempData():
         'Humidity: {0:0.1f} *c'.format(humidity), scroll_speed = 0.05)
     sense.clear()
     if temp & humidity is not None:
-        timeStamp = datetime.now().strftime("%H:%M")
+        timestamp = datetime.now().strftime("%H:%M")
         temp = round(temp, 1)
         humidity = round(humidity, 1)
         logData(timestamp, temp, humidity)
 
-# Handle for thread to polling every 5 milliseconds, and calls processes.
-# Effectively functions as a main().
-def polltemp():
-    getTempData()
+# Thread to recursively poll every 5 milliseconds, and calls processes.
+def poll():
+    try:
+        getTempData()
+        t = Timer(0.5, poll)
+        t.start()
+    except KeyboardInterrupt:
+        sense.clear()
+        print("Thread closed").t.close()
 
-# Timer thread for temperature poll that polls evey 5 milliseconds
-t = Timer(0.5, polltemp)
-t.start()
+def main():
+    try: 
+        # Calls a thread timer to initiate the poll
+        t = Timer(0.5, poll)
+        t.start()
+    except KeyboardInterrupt:
+        sense.clear()
+        print("Thread closed").t.close()
+
+main()

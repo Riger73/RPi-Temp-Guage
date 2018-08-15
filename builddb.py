@@ -1,10 +1,13 @@
+#!/usr/bin/env python3
 import sqlite3 as db
+
 # Author - Tim Novice sn: s3572290 RMIT
 # Code adapted from tutorial 4 examples using 'with' keyword
 # Establishes a database connection to a1data.db
 # and builds data fields.
 # Script should be run in the root of the directory
 # where the database lives.
+#
 conn = db.connect('a1data.db')
 with conn:
     cursor = conn.cursor()
