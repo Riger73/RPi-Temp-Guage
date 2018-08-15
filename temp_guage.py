@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-
 from sense_hat import SenseHat
 from datetime import datetime
 from threading import Timer
 import sqlite3 as db
+
 # Author Tim Novice sn: s3572290 RMIT
 #
 # Gathers temerature and offsets from device heat.
