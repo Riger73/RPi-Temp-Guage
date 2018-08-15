@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 from sense_hat import SenseHat
 from datetime import datetime
 from threading import Timer
@@ -51,7 +52,7 @@ def poll():
         t.start()
     except KeyboardInterrupt:
         sense.clear()
-        print("Thread closed").t.close()
+        print("Thread closed").exit()
 
 def main():
     try: 
@@ -60,6 +61,6 @@ def main():
         t.start()
     except KeyboardInterrupt:
         sense.clear()
-        print("Thread closed").t.close()
+        print("Thread closed").exit()
 
 main()
