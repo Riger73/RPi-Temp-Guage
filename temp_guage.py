@@ -49,6 +49,7 @@ def poll():
     try:
         getTempData()
         t = Timer(0.5, poll)
+        t.daemon = True
         t.start()
     except KeyboardInterrupt:
         sense.clear()
@@ -58,6 +59,7 @@ def main():
     try: 
         # Calls a thread timer to initiate the poll
         t = Timer(0.5, poll)
+        t.daemon = True
         t.start()
     except KeyboardInterrupt:
         sense.clear()
