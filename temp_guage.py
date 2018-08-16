@@ -17,6 +17,7 @@ sense.clear()
 
 tempds = 'a1data.db'
 
+
 # Write data to database
 def logData(timestamp, temp, humidity):
     try:
@@ -32,6 +33,8 @@ def logData(timestamp, temp, humidity):
         conn.commit()
         conn.close()
         print("New data written to data store...")
+
+
 # Temperature and humitity poller
 def getTempData(): 
     temp = sense.get_temperature()
@@ -48,13 +51,16 @@ def getTempData():
         humidity = round(humidity, 1)
         logData(timestamp, temp, humidity)
 
+
+# Implements thread to poll persistently as a recursion
 def poll():
     getTempData()
     t = Timer(0.3, poll)
     t.daemon = True
     t.start()
 
-# Handle for thread to poll every 5 milliseconds, and calls processes.
+
+# Main method to handle entrypoint for thread to poll every 3 milliseconds
 # Effectively functions as a main().
 def main():
     try:
