@@ -51,6 +51,7 @@ def getTempData():
 def poll():
     getTempData()
     t = Timer(0.3, poll)
+    t.daemon = True
     t.start()
 
 # Handle for thread to poll every 5 milliseconds, and calls processes.
@@ -58,6 +59,7 @@ def poll():
 def main():
     try:
         t = Timer(0.3, poll)
+        t.daemon = True
         t.start()
     except KeyboardInterrupt:
         sense.clear()
