@@ -50,7 +50,8 @@ def getTempData():
         rawtime = datetime.datetime.now()
         melbtime = rawtime + datetime.timedelta(hours=10)
         timestamp = melbtime.strftime("%H:%M")
-        temp = round(temp, 1)
+        # Approximate cpu temperature load accounted for
+        temp = round(temp, 1) - 20
         humidity = round(humidity, 1)
         logData(timestamp, temp, humidity)
 
