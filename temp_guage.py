@@ -15,7 +15,7 @@ import sys
 sense = SenseHat()
 sense.clear()
 
-tempds = 'a1data.db'
+tempds = '/database/a1data.db'
 
 
 # Write data to database
