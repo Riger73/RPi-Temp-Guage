@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import sqlite3 as db
+from shutil import copyfile
 import os
 from datetime import date as label
 
@@ -13,12 +14,10 @@ from datetime import date as label
 #
 conn = db.connect('a1data.db')
 dbfile = 'a1data.db'
-if(os.path.isfile('/database/a1data.db')):
-    bkdbfile = 'a1data_{}.db'.format(label.today())
-    try:
-        f = open(bkdbfile, 'w')
-    finally:
-        f.close()
+dbfilePath = '/database/a1data.db'
+if(os.path.isfile(dbfilePath)):
+    bkdbfile = '/database/a1data_{}.db'.format(label.today())
+    copyfile(dbfilePath, bkdbfile)
 else:
     with conn:
         cursor = conn.cursor()
