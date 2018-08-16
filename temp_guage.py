@@ -2,6 +2,7 @@
 from sense_hat import SenseHat
 from datetime import datetime
 from threading import Timer
+import datetime
 import sqlite3 as db
 import sys
 
@@ -46,7 +47,9 @@ def getTempData():
         'Humidity: {0:0.1f} *c'.format(humidity), scroll_speed = 0.05)
     sense.clear()
     if temp and humidity is not None:
-        timestamp = datetime.now().strftime("%H:%M")
+        rawtime = datetime.datetime.now()
+        melbtime = rawtime + datetime.timedelta(hours=10)
+        timestamp = melbtime.strftime("%H:%M")
         temp = round(temp, 1)
         humidity = round(humidity, 1)
         logData(timestamp, temp, humidity)
@@ -56,7 +59,6 @@ def getTempData():
 def poll():
     getTempData()
     t = Timer(0.3, poll)
-    t.daemon = True
     t.start()
 
 
@@ -65,7 +67,6 @@ def poll():
 def main():
     try:
         t = Timer(0.3, poll)
-        t.daemon = True
         t.start()
     except KeyboardInterrupt:
         sense.clear()
