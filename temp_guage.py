@@ -26,6 +26,11 @@ def logData(timestamp, temp, humidity):
         conn = db.connect(tempds)
         curs = conn.cursor()
         curs.execute("INSERT INTO ASSIGNMENT1_data values(?, ?, ?)", params)
+    except db.OperationalError as e:
+        if ("locked" in str(e)):
+            time.sleep(1)
+        else:
+            raise
     except KeyboardInterrupt:
         conn.commit()
         conn.close()
@@ -33,7 +38,6 @@ def logData(timestamp, temp, humidity):
     finally:
         conn.commit()
         conn.close()
-        print("New data written to data store...")
 
 
 # Temperature and humitity poller
@@ -46,7 +50,7 @@ def getTempData():
     sense.show_message(
         'Humidity: {0:0.1f} *c'.format(humidity), scroll_speed = 0.05)
     sense.clear()
-    if temp and humidity is not None:
+    if (temp and humidity is not None):
         rawtime = datetime.datetime.now()
         melbtime = rawtime + datetime.timedelta(hours=10)
         timestamp = melbtime.strftime("%H:%M")
