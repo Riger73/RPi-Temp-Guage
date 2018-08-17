@@ -30,8 +30,10 @@ def readData(timestamp, temp, humidity):
     try: 
         params = (timestamp, temp, humidity)
         conn = db.connect(tempds)
-        curs = conn.cursor()
-        curs.execute("SELECT FROM ASSIGNMENT1_data values(?, ?, ?)", params)
+        cursStamp = conn.cursor()
+        cursTemp = conn.cursor()
+        cursHum = conn.cursor()
+        cursStamp.execute("SELECT timestamp FROM ASSIGNMENT1_data values(?, ?, ?)", params)
 
         return timestamp, temp, humidity
     # Handles db locking
