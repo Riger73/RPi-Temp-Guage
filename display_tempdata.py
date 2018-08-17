@@ -8,8 +8,6 @@ from pygal.style import DarkSolarizedStyle
 
 app = Flask(__name__)
 tempds = '/database/a1data.db'
-dbfile = 'a1data.db'
-dbfilePath = '/database/a1data.db'
 
 # Reads data from temp/humidity database
 def readData(timestamp, temp, humidity):
