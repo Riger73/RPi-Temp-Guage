@@ -9,6 +9,13 @@ from urllib.request import urlopen
 from flask import Flask, render_template, request
 from pygal.style import DarkSolarizedStyle
 
+# Author Tim Novice sn: s3572290 RMIT
+#
+# Retrieves data from database and populates it to
+# a web server page. Week 5 tutorial and sample code
+# were used to build the web server. 
+#
+
 tempds = '/database/a1data.db'
 
 # Reads data from temp/humidity database
@@ -31,7 +38,7 @@ def readData(timestamp, temp, humidity):
         conn.close()
 
 
-# main route 
+# Main routine - Design taken from week 6 code samples  
 @app.route("/")
 def index():	
 	timestamp, temp, humidity = readData()
