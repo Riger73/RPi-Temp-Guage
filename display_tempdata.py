@@ -38,7 +38,7 @@ def readData(timestamp, temp, humidity):
         conn.close()
 
 
-# Main routine - Design taken from week 6 code samples  
+# Main routine - Design taken from week 5 code samples  
 @app.route("/")
 def index():	
 	timestamp, temp, humidity = readData()
