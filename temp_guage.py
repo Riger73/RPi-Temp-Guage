@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from sense_hat import SenseHat
 from datetime import datetime
+from time import sleep
 from threading import Timer
 import datetime
 import sqlite3 as db
@@ -28,7 +29,7 @@ def logData(timestamp, temp, humidity):
         curs.execute("INSERT INTO ASSIGNMENT1_data values(?, ?, ?)", params)
     except db.OperationalError as e:
         if ("locked" in str(e)):
-            time.sleep(1)
+            sleep(1)
         else:
             raise
     except KeyboardInterrupt:
