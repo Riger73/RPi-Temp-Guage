@@ -19,7 +19,6 @@ from pygal.style import DarkSolarizedStyle
 app = Flask(__name__)
 
 # Testing logging, to remove when live
-import logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
