@@ -31,16 +31,13 @@ tempds = '/database/a1data.db'
 def readData(timestamp, temp, humidity):
     try: 
         conn = db.connect(tempds)
-        cursStamp = conn.cursor()
-        cursTemp = conn.cursor()
-        cursHum = conn.cursor()
-        cursStamp.execute(
-            "SELECT timestamp FROM ASSIGNMENT1_data values(?,)", timestamp)
-        cursTemp.execute(
-            "SELECT temp FROM ASSIGNMENT1_data values(?,)", temp)
-        cursHum.execute(
-            "SELECT humidity FROM ASSIGNMENT1_data values(?,)", humidity)
-
+        curs = conn.cursor()
+        for row in curs.execute(
+                "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC\
+                 LIMIT1"):
+            timestamp = str(row[0])
+            temp = row[1]
+            humidity = row[2]
         return timestamp, temp, humidity
     # Handles db locking
     except db.OperationalError as e:
@@ -56,14 +53,13 @@ def readData(timestamp, temp, humidity):
 # Main routine - Design taken from week 5 code samples  
 @app.route("/")
 def index():	
-	timestamp, temp, humidity = readData()
-	templateData = {
-		'timestamp': timestamp,
-		'temp': temp,
-        'humidity' : humidity
-	}
-	return render_template('index.html', **templateData)
-
-if __name__ == "__main__":
-	host = os.popen('hostname -I').read()
-	app.run(host=host, port=80, debug=False)
+    timestamp, temp, humidity = readData()
+    templateData = {
+        'timestamp': timestamp,
+        'temp': temp,
+        'humidity': humidity
+    }
+    return render_template('index.html', **templateData)
+if (__name__ == "__main__"):
+    host = os.popen('hostname -I').read()
+    app.run(host=host, port=80, debug=False)
