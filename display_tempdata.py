@@ -5,6 +5,7 @@ import logging
 import sqlite3 as db
 from flask import Flask, render_template, request
 from time import sleep
+from shutil import copy2
 
 
 # Author Tim Novice sn: s3572290 RMIT
@@ -21,23 +22,21 @@ log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
 tempds = '/database/a1data.db'
-
+cachefile = '/database/a1data_cache.db'
 
 # Reads data from the database to populate the web
 def readData():
     try:
-        conn = db.connect(tempds)
+        copy2(tempds, cachefile)
+        conn = db.connect(cachefile)
         curs = conn.cursor()
-        while (curs.execute(
+        for row in curs.execute(
                 "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC\
-                 LIMIT 1") is not None):
-            for row in curs.execute(
-                    "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC\
-                     LIMIT 1"):
-                timestamp = str(row[0])
-                temp = row[1]
-                humidity = row[2]
-            return timestamp, temp, humidity
+                 LIMIT 1"):
+            timestamp = str(row[0])
+            temp = row[1]
+            humidity = row[2]
+        return timestamp, temp, humidity
     # Handles db locking
     except db.OperationalError as e:
         if ("locked" in str(e)):

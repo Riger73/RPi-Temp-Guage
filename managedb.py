@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import sqlite3 as db
-from shutil import copy2
 import os
+from shutil import copy2
 from datetime import date as label
 
 # Author - Tim Novice sn: s3572290 RMIT
