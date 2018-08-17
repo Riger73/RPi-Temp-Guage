@@ -6,10 +6,6 @@ import os
 import logging
 import sqlite3 as db
 import time
-from datetime import datetime
-from urllib.request import urlopen
-from flask import Flask, render_template, request
-from pygal.style import DarkSolarizedStyle
 
 # Author Tim Novice sn: s3572290 RMIT
 #
@@ -27,7 +23,6 @@ log.setLevel(logging.ERROR)
 tempds = '/database/a1data.db'
 
 
-# Reads data from temp/humidity database
 def readData(timestamp, temp, humidity):
     try: 
         conn = db.connect(tempds)
