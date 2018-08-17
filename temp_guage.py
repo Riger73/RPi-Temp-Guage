@@ -27,6 +27,7 @@ def logData(timestamp, temp, humidity):
         conn = db.connect(tempds)
         curs = conn.cursor()
         curs.execute("INSERT INTO ASSIGNMENT1_data values(?, ?, ?)", params)
+    # Handles db locking
     except db.OperationalError as e:
         if ("locked" in str(e)):
             sleep(1)
@@ -35,6 +36,7 @@ def logData(timestamp, temp, humidity):
     except KeyboardInterrupt:
         conn.commit()
         conn.close()
+        # Kill db connection in case close() gets locked up
         conn.interrupt()
     finally:
         conn.commit()
@@ -61,19 +63,17 @@ def getTempData():
         logData(timestamp, temp, humidity)
 
 
-# Implements thread to poll persistently as a recursion
+# Implements thread, polling persistently.
 def poll():
     getTempData()
     t = Timer(0.3, poll)
     t.start()
 
 
-# Main method to handle entrypoint for thread to poll every 3 milliseconds
-# Effectively functions as a main().
+# Main method to handle entrypoint for polling thread
 def main():
     try:
-        t = Timer(0.3, poll)
-        t.start()
+        poll()
     except KeyboardInterrupt:
         sense.clear()
         print("Thread closed")
