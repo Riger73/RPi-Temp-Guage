@@ -23,6 +23,7 @@ log.setLevel(logging.ERROR)
 tempds = '/database/a1data.db'
 
 
+# Reads data from the database to populate the web
 def readData():
     try:
         conn = db.connect(tempds)
@@ -55,6 +56,8 @@ def index():
         'humidity': humidity
     }
     return render_template('index.html', **templateData)
+
+
 if (__name__ == "__main__"):
     host = os.popen('hostname -I').read()
     app.run(host=host, port=80, debug=False)
