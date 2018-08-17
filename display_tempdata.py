@@ -7,6 +7,7 @@ import logging
 import sqlite3 as db
 import time
 
+
 # Author Tim Novice sn: s3572290 RMIT
 #
 # Retrieves data from database and populates it to
