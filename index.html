@@ -1,16 +1,14 @@
 ﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
+  <head>
     <title>Assignment1 Temperature & Humidity Data </title>
-    <link rel="stylesheet" href='../artifacts/style.css'/>
-</head>
-<body>
+    <link rel="stylesheet" href='../static/style.css'/>
+  </head>
+  <body>
     <h1>RPi Weather Data </h1>
-    <h3> TEMPERATURE   ==>  {{ tempLab }} oC</h3>
-    <h3> HUMIDITY ==>  {{ humLab }} %</h3>
+    <h3> TEMPERATURE   ==>  {{ temp }} oC</h3>
+    <h3> HUMIDITY ==>  {{ humidity }} %</h3>
     <hr>
-    <hr3> Current Reading: {{ time }} ==> <a href="/"class="button">REFRESH</a></hr3>
-</body>
+    <h3> Current Reading: {{ timestamp }} ==> <a href="/"class="button">REFRESH</a></h3>
+    <hr>
+  </body>
 </html>

@@ -27,6 +27,8 @@ cachefile = '/database/a1data_cache.db'
 # Reads data from the database to populate the web
 def readData():
     try:
+        if(os.path.isfile(cachefile)):
+            os.remove(cachefile)
         copy2(tempds, cachefile)
         conn = db.connect(cachefile)
         curs = conn.cursor()
@@ -36,6 +38,7 @@ def readData():
             timestamp = str(row[0])
             temp = row[1]
             humidity = row[2]
+        conn.close()
         return timestamp, temp, humidity
     # Handles db locking
     except db.OperationalError as e:
@@ -43,9 +46,6 @@ def readData():
             sleep(1)
         else:
             raise
-    finally:
-        conn.commit()
-        conn.close()
 
 
 # Main routine - Design taken from week 5 code samples  
@@ -53,9 +53,9 @@ def readData():
 def index():	
     timestamp, temp, humidity = readData()
     templateData = {
-        'timestamp': timestamp,
-        'temp': temp,
-        'humidity': humidity
+        'timestamp' : timestamp,
+        'temp' : temp,
+        'humidity' : humidity
     }
     return render_template('index.html', **templateData)
 
