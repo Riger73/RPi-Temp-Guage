@@ -47,11 +47,7 @@ def logData(timestamp, temp, humidity):
 def getTempData(): 
     temp = sense.get_temperature()
     humidity = sense.get_humidity()
-    sense.show_message(
-        'Temp: {0:0.1f} *c'.format(temp), scroll_speed = 0.05)
-    sense.clear()
-    sense.show_message(
-        'Humidity: {0:0.1f} *c'.format(humidity), scroll_speed = 0.05)
+
     sense.clear()
     if (temp and humidity is not None):
         rawtime = datetime.datetime.now()
@@ -61,6 +57,10 @@ def getTempData():
         temp = round(temp, 1) - 20
         humidity = round(humidity, 1)
         logData(timestamp, temp, humidity)
+        sense.clear()
+        sense.show_message(
+            'Temp: {0:0.1f} *c'.format(temp), scroll_speed = 0.03)
+        sense.clear()
 
 
 # Implements thread, polling persistently.
