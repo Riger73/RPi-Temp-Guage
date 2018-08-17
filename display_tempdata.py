@@ -3,8 +3,10 @@ import pygal
 import flask
 import json
 import os
-from datetime import datetime
+import logging
 import sqlite3 as db
+import time
+from datetime import datetime
 from urllib.request import urlopen
 from flask import Flask, render_template, request
 from pygal.style import DarkSolarizedStyle
@@ -24,15 +26,20 @@ log.setLevel(logging.ERROR)
 
 tempds = '/database/a1data.db'
 
+
 # Reads data from temp/humidity database
 def readData(timestamp, temp, humidity):
     try: 
-        params = (timestamp, temp, humidity)
         conn = db.connect(tempds)
         cursStamp = conn.cursor()
         cursTemp = conn.cursor()
         cursHum = conn.cursor()
-        cursStamp.execute("SELECT timestamp FROM ASSIGNMENT1_data values(?, ?, ?)", params)
+        cursStamp.execute(
+            "SELECT timestamp FROM ASSIGNMENT1_data values(?,)", timestamp)
+        cursTemp.execute(
+            "SELECT temp FROM ASSIGNMENT1_data values(?,)", temp)
+        cursHum.execute(
+            "SELECT humidity FROM ASSIGNMENT1_data values(?,)", humidity)
 
         return timestamp, temp, humidity
     # Handles db locking
