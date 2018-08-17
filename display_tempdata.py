@@ -16,6 +16,13 @@ from pygal.style import DarkSolarizedStyle
 # were used to build the web server. 
 #
 
+app = Flask(__name__)
+
+# Testing logging, to remove when live
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+
 tempds = '/database/a1data.db'
 
 # Reads data from temp/humidity database
