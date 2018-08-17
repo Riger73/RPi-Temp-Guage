@@ -28,13 +28,16 @@ def readData():
     try:
         conn = db.connect(tempds)
         curs = conn.cursor()
-        for row in curs.execute(
+        while (curs.execute(
                 "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC\
-                 LIMIT1"):
-            timestamp = str(row[0])
-            temp = row[1]
-            humidity = row[2]
-        return timestamp, temp, humidity
+                 LIMIT 1") is not None):
+            for row in curs.execute(
+                    "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC\
+                     LIMIT 1"):
+                timestamp = str(row[0])
+                temp = row[1]
+                humidity = row[2]
+            return timestamp, temp, humidity
     # Handles db locking
     except db.OperationalError as e:
         if ("locked" in str(e)):
