@@ -1,11 +1,10 @@
 #!/usr/env python 3
 import pygal
-import flask
-import json
 import os
 import logging
 import sqlite3 as db
-import time
+from flask import Flask, render_template, request
+from time import sleep
 
 
 # Author Tim Novice sn: s3572290 RMIT
@@ -24,8 +23,8 @@ log.setLevel(logging.ERROR)
 tempds = '/database/a1data.db'
 
 
-def readData(timestamp, temp, humidity):
-    try: 
+def readData():
+    try:
         conn = db.connect(tempds)
         curs = conn.cursor()
         for row in curs.execute(
