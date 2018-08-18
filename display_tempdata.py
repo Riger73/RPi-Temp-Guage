@@ -7,6 +7,7 @@ from time import sleep
 
 import pygal
 from flask import Flask, render_template, request
+from pygal.style import LightSolarizedStyle
 
 # Author Tim Novice sn: s3572290 RMIT
 #
@@ -58,7 +59,8 @@ def getLinegraph():
         'Humidity': humidity
     }
     try:
-        linegraph = pygal.Line()
+        linegraph = pygal.StackedLine(
+            fill=True, interpolate='cubic', style=LightSolarizedStyle)
         linegraph.title = 'Temperature & Humidity Data over time'
         for timestamp in templateData:
             linegraph.x_labels = map(str, timestamp)
@@ -66,7 +68,7 @@ def getLinegraph():
             linegraph.add('Temperature', temp)
         for humidity in templateData:
             linegraph.add('Humidity',  humidity)
-        return render_template("index.html", **linegraph.render())
+        return render_template("index.html", **linegraph.render_data_uri())
     except Exception as e:
         return(str(e))
 
