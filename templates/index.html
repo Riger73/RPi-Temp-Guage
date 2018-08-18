@@ -5,13 +5,11 @@
   <link rel="stylesheet" href='../static/style.css' />
 </head>
 
-<body>
-  <h1>RPi Weather Data </h1>
-  <h3> TEMPERATURE ==> {{ temp }} oC</h3>
-  <h3> HUMIDITY ==> {{ humidity }} %</h3>
-  <hr>
-  <h3> Current Reading: {{ timestamp }} ==> <a href="/" class="button">REFRESH</a></h3>
-  <hr>
+<body class="body">
+  <!-- Code samples used from www.pygal.org -->
+  <div id="linegraph">
+    <embed type="image/svg+xml" src={ { linegraph|safe }} />
+  </div>
 </body>
 
 </html>
