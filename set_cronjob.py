@@ -12,6 +12,6 @@ temp  = cron.new(command='/database/temp_guage.py')
 database = cron.new(command='/database/builddb.py')
 
 #job settings
-temp.minute.every(1)
+temp.minute.every(15)
 database.day.every(1)
 cron.write()
