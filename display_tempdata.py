@@ -2,12 +2,11 @@
 import logging
 import os
 import sqlite3 as db
-from shutil import copy2
-from time import sleep
-
 import pygal
 from flask import Flask, render_template
 from pygal.style import LightSolarizedStyle
+from shutil import copy2
+from time import sleep
 
 # Author Tim Novice sn: s3572290 RMIT
 #
@@ -34,13 +33,19 @@ def readData():
         copy2(dbfilePath, cachefile)
         conn = db.connect(cachefile)
         curs = conn.cursor()
-        for row in curs.execute(
-                "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC"):
-            timestamp = str(row[0])
-            temp = row[1]
-            humidity = row[2]
+        curs.execute(
+                "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC LIMIT\
+                 10")
+        dbData = curs.fetchall()
+        timestamps = []
+        temps = []
+        humiditys = []
+        for row in reversed(dbData):
+            timestamps.append(row[0])
+            temps.append(row[1])
+            humiditys.append(row[2])
         conn.close()
-        return timestamp, temp, humidity
+        return timestamps, temps, humiditys
     # Handles db locking
     except db.OperationalError as e:
         if ("locked" in str(e)):
@@ -51,31 +56,22 @@ def readData():
 
 # Method using Pygal libraries to plot line graphs
 # Code samples sourced from www.pygal.org
-@app.route("/templates/")
+@app.route("/")
 def getLinegraph():
-    timestamp, temp, humidity = readData()
-    templateData = {
-        'Timestamp': timestamp,
-        'Temperature': temp,
-        'Humidity': humidity
-    }
+    timestamps, temps, humiditys = readData()
     try:
         linegraph = pygal.StackedLine(
             fill=True, interpolate='cubic', style=LightSolarizedStyle)
         linegraph.title = 'Temperature & Humidity Data over time'
-        for timestamp in templateData:
-            linegraph.x_labels = map(str, timestamp)
-        for temp in templateData:
-            linegraph.add('Temperature', temp)
-        for humidity in templateData:
-            linegraph.add('Humidity',  humidity)
-        return render_template("index.html", **linegraph.render_data_uri())
+        linegraph.x_labels = map(str, timestamps)
+        linegraph.add('Temperature', temps)
+        linegraph.add('Humidity', humiditys)
+        return linegraph.render_response()
     except Exception as e:
         return(str(e))
 
 
 # Main routine - Design taken from week 5 code samples
-@app.route("/")
 def index():
     getLinegraph()
 
