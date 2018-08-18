@@ -78,4 +78,6 @@ def main():
         sense.clear()
         print("Thread closed")
         sys.exit()
+
+        
 main()

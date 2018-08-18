@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-import pygal
-import os
 import logging
+import os
 import sqlite3 as db
-from flask import Flask, render_template, request
-from time import sleep
+import pygal
+from flask import Flask, render_template
+from pygal.style import LightSolarizedStyle
 from shutil import copy2
-
+from time import sleep
 
 # Author Tim Novice sn: s3572290 RMIT
 #
 # Retrieves data from database and populates it to
 # a web server page. Week 5 tutorial and sample code
-# were used to build the web server. 
+# were used to build the web server.
 #
 
 app = Flask(__name__)
@@ -21,7 +21,7 @@ app = Flask(__name__)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
-tempds = '/database/a1data.db'
+dbfilePath = '/database/a1data.db'
 cachefile = '/database/a1data_cache.db'
 
 
@@ -30,17 +30,22 @@ def readData():
     try:
         if(os.path.isfile(cachefile)):
             os.remove(cachefile)
-        copy2(tempds, cachefile)
+        copy2(dbfilePath, cachefile)
         conn = db.connect(cachefile)
         curs = conn.cursor()
-        for row in curs.execute(
-                "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC\
-                 LIMIT 1"):
-            timestamp = str(row[0])
-            temp = row[1]
-            humidity = row[2]
+        curs.execute(
+                "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC LIMIT\
+                 10")
+        dbData = curs.fetchall()
+        timestamps = []
+        temps = []
+        humiditys = []
+        for row in reversed(dbData):
+            timestamps.append(row[0])
+            temps.append(row[1])
+            humiditys.append(row[2])
         conn.close()
-        return timestamp, temp, humidity
+        return timestamps, temps, humiditys
     # Handles db locking
     except db.OperationalError as e:
         if ("locked" in str(e)):
@@ -49,29 +54,26 @@ def readData():
             raise
 
 
-# Method using Pygal libraries to plot line graphs 
-getLinegraph():
-    try:
-        
-    line_chart = pygal.Line()
-    line_chart.title = 'Temperature & Humidity Data over time'
-    line_chart.x_labels = map(str, range(2002, 2013))
-    line_chart.add('Firefox', [None, None,    0, 16.6,   25,   31, 36.4, 45.5, 46.3, 42.8, 37.1])
-    line_chart.add('Chrome',  [None, None, None, None, None, None,    0,  3.9, 10.8, 23.8, 35.3])
-    line_chart.add('IE',      [85.8, 84.6, 84.7, 74.5,   66, 58.6, 54.7, 44.8, 36.2, 26.6, 20.1])
-    line_chart.add('Others',  [14.2, 15.4, 15.3,  8.9,    9, 10.4,  8.9,  5.8,  6.7,  6.8,  7.5])
-    line_chart.render()
-
-# Main routine - Design taken from week 5 code samples  
+# Method using Pygal libraries to plot line graphs
+# Code samples sourced from www.pygal.org
 @app.route("/")
+def getLinegraph():
+    timestamps, temps, humiditys = readData()
+    try:
+        linegraph = pygal.StackedLine(
+            fill=True, interpolate='cubic', style=LightSolarizedStyle)
+        linegraph.title = 'Temperature & Humidity Data over time'
+        linegraph.x_labels = map(str, timestamps)
+        linegraph.add('Temperature', temps)
+        linegraph.add('Humidity', humiditys)
+        return linegraph.render_response()
+    except Exception as e:
+        return(str(e))
+
+
+# Main routine - Design taken from week 5 code samples
 def index():
-    timestamp, temp, humidity = readData()
-    templateData = {
-        'timestamp': timestamp,
-        'temp': temp,
-        'humidity': humidity
-    }
-    return render_template('index.html', **templateData)
+    getLinegraph()
 
 
 if (__name__ == "__main__"):
