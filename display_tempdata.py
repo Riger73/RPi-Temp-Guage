@@ -22,7 +22,7 @@ app = Flask(__name__)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
-tempds = '/database/a1data.db'
+dbfilePath = '/database/a1data.db'
 cachefile = '/database/a1data_cache.db'
 
 
@@ -31,7 +31,7 @@ def readData():
     try:
         if(os.path.isfile(cachefile)):
             os.remove(cachefile)
-        copy2(tempds, cachefile)
+        copy2(dbfilePath, cachefile)
         conn = db.connect(cachefile)
         curs = conn.cursor()
         for row in curs.execute(
@@ -50,6 +50,7 @@ def readData():
 
 
 # Method using Pygal libraries to plot line graphs
+# Code samples sourced from www.pygal.org
 @app.route("/templates/")
 def getLinegraph():
     timestamp, temp, humidity = readData()
