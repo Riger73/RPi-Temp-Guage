@@ -51,7 +51,7 @@ def readData():
 
 # Method using Pygal libraries to plot line graphs 
 @app.route("/graphs")
-getLinegraph():
+def getLinegraph():
     try:
         line_chart = pygal.Line()
         line_chart.title = 'Temperature & Humidity Data over time'
