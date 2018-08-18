@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+
+<head>
+  <title>Assignment1 Temperature & Humidity Data </title>
+  <link rel="stylesheet" href='../static/style.css' />
+</head>
+
+<body class="body">
+  <h1>RPi Weather Data </h1>
+  <h3> TEMPERATURE ==> {{ temp }} oC</h3>
+  <h3> HUMIDITY ==> {{ humidity }} %</h3>
+  <hr>
+  <h3> Current Reading: {{ timestamp }} ==> <a href="/" class="button">REFRESH</a></h3>
+  <hr>
+  <div class="container" align="left">
+    <embed type="image/svg+xml" src={{linegraph_data|safe}} style='max-width:1000px' />
+  </div>
+</body>
+
+</html>

@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-import pygal
-import os
 import logging
+import os
 import sqlite3 as db
-from flask import Flask, render_template, request
-from time import sleep
 from shutil import copy2
+from time import sleep
 
+import pygal
+from flask import Flask, render_template, request
 
 # Author Tim Novice sn: s3572290 RMIT
 #
 # Retrieves data from database and populates it to
 # a web server page. Week 5 tutorial and sample code
-# were used to build the web server. 
+# were used to build the web server.
 #
 
 app = Flask(__name__)
@@ -34,8 +34,7 @@ def readData():
         conn = db.connect(cachefile)
         curs = conn.cursor()
         for row in curs.execute(
-                "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC\
-                 LIMIT 1"):
+                "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC"):
             timestamp = str(row[0])
             temp = row[1]
             humidity = row[2]
@@ -49,31 +48,33 @@ def readData():
             raise
 
 
-# Method using Pygal libraries to plot line graphs 
-@app.route("/graphs")
+# Method using Pygal libraries to plot line graphs
+@app.route("/templates/")
 def getLinegraph():
-    try:
-        line_chart = pygal.Line()
-        line_chart.title = 'Temperature & Humidity Data over time'
-        line_chart.x_labels = map(str, range(2002, 2013))
-        line_chart.add('Temperature', [None, None,    0, 16.6,   25,   31, 36.4, 45.5, 46.3, 42.8, 37.1])
-        line_chart.add('Humidity',  [None, None, None, None, None, None,    0,  3.9, 10.8, 23.8, 35.3])
-        line_chart.render()
-    return render_template('linegraph.html', templates)
-    except Exception, e:
-        return(str(e))
-
-
-# Main routine - Design taken from week 5 code samples  
-@app.route("/")
-def index():
     timestamp, temp, humidity = readData()
     templateData = {
         'Timestamp': timestamp,
         'Temperature': temp,
         'Humidity': humidity
     }
-    return render_template('index.html', **templateData)
+    try:
+        linegraph = pygal.Line()
+        linegraph.title = 'Temperature & Humidity Data over time'
+        for timestamp in templateData:
+            linegraph.x_labels = map(str, timestamp)
+        for temp in templateData:
+            linegraph.add('Temperature', temp)
+        for humidity in templateData:
+            linegraph.add('Humidity',  humidity)
+        return render_template("index.html", **linegraph.render())
+    except Exception as e:
+        return(str(e))
+
+
+# Main routine - Design taken from week 5 code samples
+@app.route("/")
+def index():
+    getLinegraph()
 
 
 if (__name__ == "__main__"):
