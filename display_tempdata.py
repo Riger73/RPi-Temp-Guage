@@ -24,10 +24,7 @@ log.setLevel(logging.ERROR)
 tempds = '/database/a1data.db'
 cachefile = '/database/a1data_cache.db'
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 007ac80e3174aae872910bea1cbd1502c720088f
 # Reads data from the database to populate the web
 def readData():
     try:
@@ -52,7 +49,6 @@ def readData():
             raise
 
 
-<<<<<<< HEAD
 # Method using Pygal libraries to plot line graphs 
 getLinegraph():
     try:
@@ -74,16 +70,6 @@ def index():
         'timestamp': timestamp,
         'temp': temp,
         'humidity': humidity
-=======
-# Main routine - Design taken from week 5 code samples  
-@app.route("/")
-def index():	
-    timestamp, temp, humidity = readData()
-    templateData = {
-        'timestamp' : timestamp,
-        'temp' : temp,
-        'humidity' : humidity
->>>>>>> 007ac80e3174aae872910bea1cbd1502c720088f
     }
     return render_template('index.html', **templateData)
 
