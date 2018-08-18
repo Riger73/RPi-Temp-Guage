@@ -6,7 +6,7 @@ from shutil import copy2
 from time import sleep
 
 import pygal
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 from pygal.style import LightSolarizedStyle
 
 # Author Tim Novice sn: s3572290 RMIT
