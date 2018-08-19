@@ -5,7 +5,6 @@ import os
 import time
 import sqlite3 as db
 from sense_hat import SenseHat
-from shutil import copy2
 from time import sleep
 
 # Author Tim Novice sn: s3572290 RMIT
@@ -14,8 +13,7 @@ from time import sleep
 # Pairs to a know Bluetooth device and sends weather notifications.
 #
 
-userds = '/database/bta1data.db'
-cachefile = '/database/bta1data_cache.db'
+userds = '/database/a1data.db'
 
 
 # Write bt details to database
@@ -44,13 +42,10 @@ def setBtData(user_name, device_name):
 # Searches database for bt details and then tries to pair
 def getBtData():
     try:
-        if(os.path.isfile(cachefile)):
-            os.remove(cachefile)
-        copy2(userds, cachefile)
-        conn = db.connect(cachefile)
+        conn = db.connect(userds)
         curs = conn.cursor()
         curs.execute(
-            "SELECT * FROM BT_data ORDER BY user_name DESC LIMIT 1")
+                "SELECT * FROM BT_data ORDER BY user_name DESC LIMIT 1")
         dbData = curs.fetchall()
         user_name = []
         device_name = []
@@ -103,8 +98,8 @@ def main():
     # user_name, device_name = getBtData()
     user_name = input("Enter your name: ")
     device_name = input("Enter the name of your phone: ")
-    search(user_name, device_name)
     setBtData(user_name, device_name)
+    search(user_name, device_name)
 
 
 main()
