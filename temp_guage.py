@@ -3,6 +3,7 @@ from sense_hat import SenseHat
 from datetime import datetime
 from time import sleep
 from threading import Timer
+import datetime
 import requests
 import json
 import os
@@ -81,14 +82,14 @@ def getTempData():
         melbtime = rawtime + datetime.timedelta(hours=10)
         timestamp = melbtime.strftime("%H:%M")
         # Approximate cpu temperature load accounted for
-        temp = round(temp, 1) - 20
+        temp = round(temp, 1) - 18
         humidity = round(humidity, 1)
         logData(timestamp, temp, humidity)
-        if (temp < 10):
+        if (temp < 20):
             ip_address = os.popen('hostname -I').read()
             alerttexter(
                 ip_address,
-                "Alert: Temperature From Raspberry Pi is below 10 degrees C!")
+                "Alert: Temperature From Raspberry Pi is below 20 degrees C!")
         sense.clear()
         sense.show_message(
             'Temp: {0:0.1f} *c'.format(temp), scroll_speed=0.03)
