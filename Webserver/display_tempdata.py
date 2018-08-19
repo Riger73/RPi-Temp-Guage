@@ -30,7 +30,8 @@ def readData():
         conn = db.connect(cachefile)
         curs = conn.cursor()
         curs.execute(
-                "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC LIMIT 10")
+                "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC\
+                 LIMIT 10")
         dbData = curs.fetchall()
         timestamps = []
         temps = []
@@ -38,7 +39,7 @@ def readData():
         for row in reversed(dbData):
             timestamps.append(row[0])
             temps.append(row[1])
-            humiditys.append(row[2])    
+            humiditys.append(row[2])
         conn.close()
         return timestamps, temps, humiditys
     # Handles db locking
