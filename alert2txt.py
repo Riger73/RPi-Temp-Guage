@@ -24,7 +24,8 @@ def getTemp():
         conn = db.connect(tempds)
         curs = conn.cursor()
         for row in curs.execute(
-            "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC LIMIT 1"):
+                "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC LIMIT\
+                 1"):
             timestamp = str(row[0])
             temp = row[1]
             return (timestamp, temp)
