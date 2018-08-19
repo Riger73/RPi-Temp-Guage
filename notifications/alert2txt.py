@@ -11,7 +11,7 @@ import os
 # "96_pycurlBullet.py".
 #
 
-ACCESS_TOKEN = ""
+ACCESS_TOKEN = "o.9ClLiy99ubTKdvpdz9jmCqemdKq8sx9h"
 
 
 # Method to use PushBullet to send text alerts when the temperature
@@ -32,7 +32,8 @@ def alerttexter(title, body):
         }
     )
     if resp.status_code != 200:
-        raise Exception('Something wrong')
+        raise Exception(
+            'SomeAlert message was attempted but failed to connect')
     else:
         print('complete sending')
 
@@ -40,7 +41,9 @@ def alerttexter(title, body):
 # main function
 def main():
     ip_address = os.popen('hostname -I').read()
-    alerttexter(ip_address, "From Raspberry Pi")
+    alerttexter(
+        ip_address,
+        "Alert: Temperature From Raspberry Pi is below 10 degrees C!")
 
 
 main()
