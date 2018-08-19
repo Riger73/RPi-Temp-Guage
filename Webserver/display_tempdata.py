@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import logging
 import os
 import sqlite3 as db
 import pygal
@@ -17,9 +16,6 @@ from time import sleep
 
 app = Flask(__name__)
 
-# Testing logging, to remove when live
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
 
 dbfilePath = '/database/a1data.db'
 cachefile = '/database/a1data_cache.db'
