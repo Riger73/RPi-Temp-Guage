@@ -3,6 +3,8 @@ from sense_hat import SenseHat
 from datetime import datetime
 from time import sleep
 from threading import Timer
+import requests
+import json
 import sqlite3 as db
 import sys
 
@@ -17,6 +19,31 @@ sense = SenseHat()
 sense.clear()
 
 tempds = '/database/a1data.db'
+ACCESS_TOKEN = "o.9ClLiy99ubTKdvpdz9jmCqemdKq8sx9h"
+
+
+# Method to use PushBullet to send text alerts when the temperature
+# drops below 10.
+def alerttexter(title, body):
+    """ Sending notification via pushbullet.
+        Args:
+            title (str) : title of text.
+            body (str) : Body of text.
+    """
+    data_send = {"type": "note", "title": title, "body": body}
+
+    resp = requests.post(
+        'https://api.pushbullet.com/v2/pushes', data=json.dumps(data_send),
+        headers={
+            'Authorization': 'Bearer ' + ACCESS_TOKEN, 'Content-Type':
+            'application/json'
+        }
+    )
+    if resp.status_code != 200:
+        raise Exception(
+            'SomeAlert message was attempted but failed to connect')
+    else:
+        print('complete sending')
 
 
 # Write data to database
@@ -56,6 +83,11 @@ def getTempData():
         temp = round(temp, 1) - 20
         humidity = round(humidity, 1)
         logData(timestamp, temp, humidity)
+        if (temp < 10):
+            ip_address = os.popen('hostname -I').read()
+            alerttexter(
+                ip_address,
+                "Alert: Temperature From Raspberry Pi is below 10 degrees C!")
         sense.clear()
         sense.show_message(
             'Temp: {0:0.1f} *c'.format(temp), scroll_speed=0.03)
