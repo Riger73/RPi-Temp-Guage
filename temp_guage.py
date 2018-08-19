@@ -3,7 +3,6 @@ from sense_hat import SenseHat
 from datetime import datetime
 from time import sleep
 from threading import Timer
-import datetime
 import sqlite3 as db
 import sys
 
@@ -44,7 +43,7 @@ def logData(timestamp, temp, humidity):
 
 
 # Temperature and humitity poller
-def getTempData(): 
+def getTempData():
     temp = sense.get_temperature()
     humidity = sense.get_humidity()
 
@@ -59,7 +58,7 @@ def getTempData():
         logData(timestamp, temp, humidity)
         sense.clear()
         sense.show_message(
-            'Temp: {0:0.1f} *c'.format(temp), scroll_speed = 0.03)
+            'Temp: {0:0.1f} *c'.format(temp), scroll_speed=0.03)
         sense.clear()
 
 
@@ -79,5 +78,5 @@ def main():
         print("Thread closed")
         sys.exit()
 
-        
+
 main()
