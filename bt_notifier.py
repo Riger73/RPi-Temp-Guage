@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 import bluetooth
 import os
 import time
@@ -29,12 +30,15 @@ def search(user_name, device_name):
                     "Hi {}! Your phone ({}) has the MAC address: {}".format(
                         user_name, device_name, device_address))
                 sense = SenseHat()
-            temp = round(sense.get_temperature(), 1)
-            sense.show_message(
-                "Hi {}! The Current Temp is {}*c".format(
-                    user_name, temp), scroll_speed=0.05)
-        else:
-            print("No device located in range ...")
+                temp = round(sense.get_temperature(), 1)
+                sense.show_message(
+                    "Hi {}! The Current Temp is {}*c".format(
+                        user_name, temp), scroll_speed=0.05)
+            else:
+                print("No device located in range ...")
+    except KeyboardInterrupt:
+        print("Bluetooth disconnected")
+        sys.exit()
 
 
 # Main method
