@@ -24,7 +24,7 @@
     set_cronjob.py
     temp_guage.py
     |-- tests
-        db_tests.py
+        db_tester.py
     |-- WebService/
         |-- display_tempdata.py
         |-- templates/
