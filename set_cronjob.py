@@ -18,11 +18,15 @@ cron.remove_all()
 # add new cron job
 webserver = cron.new(command='/home/pi/WebService/display_tempdata.py &')
 temp = cron.new(command='/database/temp_guage.py &')
+txtalert = cron.new(command='/database/alert2txt.py &')
+bt_notify = cron.new(command='/database/bt_notifier.py &')
 database = cron.new(command='/database/builddb.py &')
 
 
 # set job frequencies
 webserver.minute.every(15)
 temp.minute.every(15)
+txtalert.minute.every(20)
+bt_notify.hour.every(1)
 database.day.every(1)
 cron.write()
