@@ -5,6 +5,7 @@ from time import sleep
 from threading import Timer
 import requests
 import json
+import os
 import sqlite3 as db
 import sys
 
