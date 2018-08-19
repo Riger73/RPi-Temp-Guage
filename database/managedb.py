@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 import sqlite3 as db
-import os
 from shutil import copy2
+import os
 from datetime import date as label
 
 # Author - Tim Novice sn: s3572290 RMIT
 #
 # Code adapted from tutorial 4 examples using 'with' keyword
-# Establishes a database connection to a1data.db
-# and builds data fields.
-# Script should be run in the root of the directory
-# where the database lives.
+# Manages database. If there's no DB it creates one.
+# If there is a dab it backs it up and appends the current date.
+# Should reside where the data is to be stored.
+# To be run once a day as a cron job.
 #
 conn = db.connect('a1data.db')
 dbfile = 'a1data.db'
