@@ -100,11 +100,14 @@ def search(user_name, device_name):
 
 # Main method
 def main():
-    # user_name, device_name = getBtData()
-    user_name = input("Enter your name: ")
-    device_name = input("Enter the name of your phone: ")
-    search(user_name, device_name)
-    setBtData(user_name, device_name)
+    user_name, device_name = getBtData()
+    while (user_name is not None):
+        search(user_name, device_name)
+    if (user_name is None):
+        user_name = input("Enter your name: ")
+        device_name = input("Enter the name of your phone: ")
+        search(user_name, device_name)
+        setBtData(user_name, device_name)
 
 
 main()
