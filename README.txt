@@ -1,6 +1,3 @@
-# RMIT 2018 semester 2
-# PIoT COSC2674 (Programming the Internet of Things)
-# Assignment1
 # Author Timothy Novice
 # Student ID: s3572290
 
