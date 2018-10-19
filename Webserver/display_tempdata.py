@@ -17,20 +17,16 @@ from time import sleep
 app = Flask(__name__)
 
 
-dbfilePath = '/database/a1data.db'
-cachefile = '/database/a1data_cache.db'
-
-
 # Reads data from the database to populate the web
 def readData():
     try:
-        if(os.path.isfile(cachefile)):
-            os.remove(cachefile)
-        copy2(dbfilePath, cachefile)
-        conn = db.connect(cachefile)
+        conn = db.connect('Driver={SQL Server};'
+                          'Server=localhost;'
+                          'Database=testdb;'
+                          'uid=sa;pwd=P@ssw0rd')
         curs = conn.cursor()
         curs.execute(
-                "SELECT * FROM ASSIGNMENT1_data ORDER BY timestamp DESC\
+                "SELECT * FROM PMReport ORDER BY timestamp DESC\
                  LIMIT 10")
         dbData = curs.fetchall()
         timestamps = []
