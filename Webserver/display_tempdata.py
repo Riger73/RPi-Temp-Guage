@@ -56,13 +56,13 @@ def readData():
 def getLinegraph():
     timestamps, temps, humiditys = readData()
     try:
-        linegraph = pygal.StackedLine(
+        line_chart = pygal.HorizontalBar(
             fill=True, interpolate='cubic', style=LightSolarizedStyle)
-        linegraph.title = 'Temperature & Humidity Data over time'
-        linegraph.x_labels = map(str, timestamps)
-        linegraph.add('Temperature', temps)
-        linegraph.add('Humidity', humiditys)
-        return linegraph.render_response()
+        line_chart.title = 'Temperature & Humidity Data over time'
+        line_chart.x_labels = map(str, timestamps)
+        line_chart.add('Temperature', temps)
+        line_chart.add('Humidity', humiditys)
+        return line_chart.render_response()
     except Exception as e:
         return(str(e))
 
